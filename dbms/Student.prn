@@ -1,0 +1,131 @@
+﻿1.Consider the following relations:
+
+Student (snum: integer, sname: string, major: string, level: string, age: integer)
+Class (name: string, meets at: string, room: string, d: integer)
+Enrolled (snum: integer, cname: string)
+Faculty (fid: integer, fname: string, deptid: integer)
+
+The Meaning Of These Relations Is Straightforward; for example,
+Enrolled has one record per student-class pair such that the student is enrolled in the class.
+Level is a two character code with 4 different values (example: Junior: JR etc)
+Write the following queries in SQL. No duplicates should be printed in any of the answers.
+
+i. Find the names of all Juniors (level = JR) who are enrolled in a name class taught by Prof.Harshith.
+
+
+
+ii. Find the names of all classes that either meet in room R128 or have five or more Students enrolled.
+
+
+
+iii. Find the ​names of all students who are enrolled in two classes that meet​ at the​ same​ time.
+
+
+
+iv. Find the ​names of faculty members who teach​ in ​every room in which some class is taught.​
+
+
+
+v. Find the ​names of faculty members for whom the ​combined enrollment of the courses ​that they teach is​​ than five​.
+
+
+
+
+mysql> select * from Student;
++------+----------+-------+-------+------+
+| snum | sname    | major | level | age  |
++------+----------+-------+-------+------+
+|    1 | Sujith   | GT    | JR    |   25 |
+|    2 | Suhas    | GT    | AS    |   20 |
+|    3 | Sumukh   | GT    | JR    |   25 |
+|    4 | Subra    | PR    | AS    |   22 |
+|    5 | Shreesha | PR    | JR    |   25 |
+|    6 | Rakshith | ENT   | JR    |   20 |
+|    7 | Sahadev  | JAVA  | SR    |   22 |
+|    8 | Swathi   | JAVA  | FR    |   20 |
+|    9 | Sachin   | GT    | JR    |   25 |
+|   10 | Sonu     | ENT   | JR    |   17 |
+|   11 | Tyson    | ENT   | AS    |   24 |
++------+----------+-------+-------+------+
+11 rows in set (0.01 sec)
+
+mysql> select * from Class;
++------+----------+------+------+
+| name | meets_at | room | d    |
++------+----------+------+------+
+| DBMS | 14:30    | R130 |    2 |
+| DS   | 08:30    | R112 |    1 |
+| FLAT | 13:30    | R125 |    3 |
+| GTC  | 11:00    | R127 |    4 |
+| OS   | 10:40    | R128 |    5 |
++------+----------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Faculty;
++-----+---------------+--------+
+| fid | fname         | deptid |
++-----+---------------+--------+
+|   1 | Prof.Harshith |    180 |
+|   2 | Prof.Peters   |    216 |
+|   3 | KarthikSir    |    240 |
+|   4 | Prof.Xavier   |    232 |
+|   5 | AnandSir      |    368 |
+|   6 | Prof.Chung    |    368 |
++-----+---------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Enrolled;
++------+-------+
+| snum | cname |
++------+-------+
+|    1 | FLAT  |
+|    2 | FLAT  |
+|    3 | OS    |
+|    4 | OS    |
+|    5 | OS    |
+|    6 | FLAT  |
+|    7 | OS    |
+|    8 | FLAT  |
+|    9 | FLAT  |
+|   10 | OS    |
+|   11 | OS    |
+|    1 | DS    |
+|    3 | DS    |
+|    5 | DS    |
+|    9 | DS    |
+|    9 | GTC   |
+|   11 | GTC   |
+|    7 | DBMS  |
+|    2 | DBMS  |
+|    6 | DBMS  |
++------+-------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT S.sname FROM Student S, Class C, Enrolled E, Faculty F WHERE S.snum=E.snum AND C.name=E.cname AND F.fid=C.d AND S.level='JR' AND F.fname LIKE '%Harshith';
++----------+
+| sname    |
++----------+
+| Sujith   |
+| Sumukh   |
+| Shreesha |
+| Sachin   |
++----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT C.name FROM Student S, Class C, Enrolled E WHERE C.room='R128' AND C.name=E.cname GROUP BY E.cname HAVING COUNT(*)>=5; 
++------+
+| name |
++------+
+| OS   |
++------+
+1 row in set (0.00 sec)
+
+mysql> SELECT sname FROM Student WHERE snum IN (SELECT s.snum FROM Student s, Class c1, Class c2, Enrolled e1, Enrolled e2 WHERE e1.snum=s.snum AND e2.snum=s.snum AND e2.cname=c2.name AND e1.cname=c1.name AND c1.name<>c2.name AND c1.meets_at=c2.meets_at);
++----------+
+| sname    |
++----------+
+| Sumukh   |
+| Shreesha |
+| Sahadev  |
++----------+
+3 rows in set (0.00 sec)

@@ -1,0 +1,135 @@
+2. The following relations keep track of airline flight information:
+
+Flights (no: integer, from: string, to: string, distance: integer,
+Departs: time, arrives: time, price: real)
+Aircraft (aid: integer, aname: string, cruisingrange: integer)
+Certified (eid: integer, aid: integer)
+Employees (eid: integer, ename: string, salary: integer)
+
+Note that the Employees relation describes pilots and other kinds of employees as well;
+Every pilot is certified for some aircraft, and only pilots are certified to fly.
+
+Write each of the following queries in SQL.
+
+i. Find the names of aircraft such that all pilots certified to operate them have salaries more than Rs.80, $
+
+
+
+ii. For each pilot who is certified for more than three aircrafts, find the eid and the maximum cruisingrange$
+
+
+
+iii. Find the names of pilots whose salary is less than the price of the cheapest route from Bengaluru to Fran$
+
+
+
+iv. For all aircraft with cruisingrange over 1000 Kms, find the name of the aircraft and the average salary o$
+
+
+
+v. Find the names of pilots certified for some Boeing aircraft.
+
+
+
+vi. Find the aids of all aircraft that can be used on routes from Bengaluru to New Delhi.
+
+
+
+
+mysql> DESC Employees; SELECT * FROM Employees;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| eid    | int(11)     | NO   | PRI | NULL    |       |
+| ename  | varchar(20) | YES  |     | NULL    |       |
+| salary | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
++------+----------+--------+
+| eid  | ename    | salary |
++------+----------+--------+
+| 4214 | Sujith   |  85000 |
+| 4215 | Sumukh   |  95000 |
+| 4216 | Rakshith |  65000 |
+| 4217 | Suhas    |  60000 |
+| 4218 | Rachna   |  45000 |
++------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> DESC Aircraft; SELECT * FROM Aircraft;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| aid           | int(11)     | NO   | PRI | NULL    |       |
+| aname         | varchar(20) | YES  |     | NULL    |       |
+| cruisingrange | int(11)     | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
++------+-----------+---------------+
+| aid  | aname     | cruisingrange |
++------+-----------+---------------+
+| 5604 | Boeing    |          2600 |
+| 5605 | Rafale    |          6150 |
+| 5606 | IndiGo    |          2850 |
+| 5607 | Lufthansa |          2800 |
+| 5608 | Air India |          3000 |
++------+-----------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> DESC Certified; SELECT * FROM Certified;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| eid   | int(11) | YES  | MUL | NULL    |       |
+| aid   | int(11) | YES  | MUL | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
++------+------+
+| eid  | aid  |
++------+------+
+| 4214 | 5604 |
+| 4215 | 5605 |
+| 4216 | 5606 |
+| 4217 | 5607 |
+| 4218 | 5608 |
++------+------+
+5 rows in set (0.00 sec)
+
+mysql> DESC Flights; SELECT * FROM Flights;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| no       | int(11)     | YES  |     | NULL    |       |
+| frm      | varchar(25) | YES  |     | NULL    |       |
+| too      | varchar(25) | YES  |     | NULL    |       |
+| distance | int(11)     | YES  |     | NULL    |       |
+| departs  | time        | YES  |     | NULL    |       |
+| arrives  | time        | YES  |     | NULL    |       |
+| price    | float       | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
++------+-----------+-----------------+----------+----------+----------+-------+
+| no   | frm       | too             | distance | departs  | arrives  | price |
++------+-----------+-----------------+----------+----------+----------+-------+
+| 8741 | Bengaluru | Chennai         |     1500 | 08:30:00 | 11:30:00 | 55000 |
+| 8125 | Mumbai    | Andaman Nicobar |      500 | 09:45:00 | 11:00:00 | 15000 |
+| 8126 | Bengaluru | Kiritibati      |     7500 | 07:00:00 | 01:30:00 | 60000 |
+| 8128 | New Delhi | Goa             |     2500 | 09:30:00 | 11:30:00 | 11000 |
+| 8212 | Bengaluru | New Delhi       |     2000 | 11:45:00 | 12:50:00 | 16000 |
+| 8272 | Bengaluru | Frankfurt       |    32000 | 20:30:00 | 10:20:00 | 72000 |
++------+-----------+-----------------+----------+----------+----------+-------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT A.aname FROM Aircraft A, Employees E, Certified C WHERE A.aid = C.aid AND E.eid = C.eid AND E.salary>80000;
++--------+
+| aname  |
++--------+
+| Boeing |
+| Rafale |
++--------+
+2 rows in set (0.00 sec)
+
