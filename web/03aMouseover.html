@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>The STACKING ORDER</title>
+    <style type="text/css">
+.plane1 {
+  border: solid thick black;
+  padding: 10px;
+  width: 300px;
+  background-color: green;
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  z-index: 0;
+}
+.plane2 {
+  border: solid thick blue;
+  padding: 10px;
+  width: 300px;
+  background-color: yellow;
+  position: absolute;
+  top: 120px;
+  left: 220px;
+  z-index: 0;
+}
+.plane3 {
+  border: solid thick red;
+  padding: 10px;
+  width: 300px;
+  background-color: silver;
+  position: absolute;
+  top: 140px;
+  left: 240px;
+  z-index: 0;
+}
+    </style>
+    <script type="text/javascript">
+var topLayer = "layer3";
+function mover(toTop) {
+  var oldTop = document.getElementById(topLayer).style;
+  var newTop = document.getElementById(toTop).style;
+  oldTop.zIndex="0";
+  newTop.zIndex="10";
+  topLayer = toTop;
+}
+    </script>
+
+  </head>
+  <body>
+    <h1><u>STACKING ORDER (3a)</u></h1>
+    <p class="plane1" id="layer1" onMouseOver="mover('layer1')">Web Lab</p>
+    <p class="plane2" id="layer2" onMouseOver="mover('layer2')">Info Sci</p>
+    <p class="plane3" id="layer3" onMouseOver="mover('layer3')">Sev Sem</p>
+  </body>
+</html>

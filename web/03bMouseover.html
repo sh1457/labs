@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title>The STACKING ORDER</title>
+    <style type="text/css">
+.plane1 {
+  border: solid thick black;
+  padding: 10px;
+  width: 300px;
+  background-color: green;
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  z-index: 1;
+}
+.plane2 {
+  border: solid thick blue;
+  padding: 10px;
+  width: 300px;
+  background-color: yellow;
+  position: absolute;
+  top: 120px;
+  left: 220px;
+  z-index: 2;
+}
+.plane3 {
+  border: solid thick red;
+  padding: 10px;
+  width: 300px;
+  background-color: silver;
+  position: absolute;
+  top: 140px;
+  left: 240px;
+  z-index: 3;
+}
+    </style>
+    <script type="text/javascript">
+var topLayer = "layer3";
+function mover(toTop, pos) {
+  var newTop = document.getElementById(toTop).style;
+  newTop.zIndex = "10";
+  topLayer = toTop;
+  origpos = pos;
+} 
+function moveback() {
+  document.getElementById(topLayer).style.zIndex = origpos;
+}
+    </script>
+
+  </head>
+  <body>
+    <h1><u>STACKING ORDER (3b)</u></h1>
+    <p class="plane1" id="layer1" onMouseOver="mover('layer1', '1')" onMouseOut="moveback();">Web Lab</p>
+    <p class="plane2" id="layer2" onMouseOver="mover('layer2', '2')" onMouseOut="moveback();">Info Sci</p>
+    <p class="plane3" id="layer3" onMouseOver="mover('layer3', '3')" onMouseOut="moveback();">Sev Sem</p>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+vtu {
+	display: block;
+	background-color: silver;
+	text-shadow: 0.5px 0 0 blue;
+	margin-top: 2em;
+	width: 65%;
+}
+usn {
+	color: red;
+	font-weight: bold;
+	min-width: 1em;
+}
+name {
+	color: blue;
+	font-weight: light;
+	text-decoration: underline;
+	min-width: 1em;
+}
+college {
+	color: green;
+	min-width: 1em;
+}
+branch {
+	color: yellow;
+	min-width: 1em;
+}
+year {
+	color: aqua;
+	min-width: 1em;
+}
+
+email{
+	color: maroon;
+	min-width: 1em;
+}

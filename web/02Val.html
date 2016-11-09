@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <script type="text/javascript">
+  function valUSN() {
+    var usn = document.getElementById("usn");
+    var pos = usn.value.match(/^[1-4][A-Z]{2}\d{2}[A-Z]{2}\d{3}$/);
+
+    if(usn.value == "") {
+      alert("Please enter USN!");
+      usn.focus();
+      return false;
+    }
+
+    if(pos) {
+      alert("The entered USN is "+usn.value);
+    }else {
+      alert("Incorrect pattern!");
+      return false;
+    }
+  }
+
+  function valSem() {
+    var sem = document.getElementById("sem");
+    var pos = sem.value.match(/^[1-8]$/);
+
+    if(sem.value == "") {
+      alert("Please enter Sem!");
+      sem.focus();
+      return false;
+    }
+
+    if(pos) {
+      alert("The entered Sem is "+sem.value);
+    }else {
+      alert("Incorrect pattern!");
+    }
+  }
+    </script>
+  </head>
+  <body>
+    <h2 align="center"><u>Form Validation</u></h2>
+    <form>
+      <p>Enter USN : </p>
+      <input type="text" id="usn">
+      <br /><br />
+      <input type="button" value="Validate USN!" onclick="valUSN();">
+      <p>Enter Sem : </p>
+      <input type="text" id="sem">
+      <br /><br />
+      <input type="button" value="Validate Sem!" onclick="valSem();">
+      <input type="reset" value="Clear">
+    </form>
+  </body>
+</html>
